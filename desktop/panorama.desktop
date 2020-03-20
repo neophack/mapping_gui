@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Exec=mapping %U
+Icon=$SNAP/panorama.svg
+Terminal=false
+Name=Mapping
+Version=1.0.0
+GenericName=Mapping GUI
+Comment=A GUI for Mapping
+Categories=SLAM
+Keywords=mapping;
