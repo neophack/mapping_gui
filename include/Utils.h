@@ -34,6 +34,7 @@
 #endif // Includes
 
 #include "imgui.h"
+#include "file_browser.h"
 
 namespace panorama {
     namespace utils {
@@ -55,6 +56,7 @@ namespace panorama {
         float getScalingFactor();
     }
 
+    void DrawFileBrowser(std::string& path, std::string title, std::string filter);
 }
 
 #endif // PANORAMA_UTILS_H

@@ -6,6 +6,23 @@ project(panorama)
 # Set module include path
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
+if(UNIX)
+    if (APPLE)
+        add_definitions(-DAPPLE)
+    else()
+        add_definitions(-DLINUX)
+    endif()
+    add_definitions(-DUNIX)
+elseif(WIN32)
+    add_definitions(-DWIN32)
+    add_definitions(-DMINGW32)
+    set(DIRENT_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/3rdparty/dirent/include)
+    include_directories(${DIRENT_INCLUDE_DIR})
+endif()
+if(MSVC)
+    add_definitions(-DMSVC)
+endif()
+
 # Includes
 include(FindOpenGL)
 include(FindThreads)
@@ -19,7 +36,10 @@ string(TIMESTAMP PANORAMA_BUILD_DATE "%Y-%m-%d %H:%M:%S" UTC)
 set(PANORAMA_PLATFORM ${CMAKE_SYSTEM_NAME})
 
 # Set standard
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_CXX_FLAGS_RELEASE "-O2")
+set(CMAKE_EXPORT_COMPILE_COMMANDS on)
 
 # Find dependencies
 find_package(OpenGL  REQUIRED)

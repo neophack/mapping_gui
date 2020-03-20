@@ -20,6 +20,25 @@
 
 using std::string;
 
+void panorama::DrawFileBrowser(std::string& path, std::string title, std::string filter) {
+  // open Dialog Simple
+  if (ImGui::Button(title.c_str()))
+    ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", filter.c_str(), ".");
+
+  // display
+  if (ImGuiFileDialog::Instance()->FileDialog("ChooseFileDlgKey")) {
+    // action if OK
+    if (ImGuiFileDialog::Instance()->IsOk == true) {
+      std::string filePathName = ImGuiFileDialog::Instance()->GetFilepathName();
+      std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+      path = filePathName;
+      // action
+    }
+    // close
+    ImGuiFileDialog::Instance()->CloseDialog("ChooseFileDlgKey");
+  }
+}
+
 void panorama::utils::trimString(std::string &str) {
     str.erase(str.begin(), std::find_if(str.begin(), str.end(), [](int ch) {
         return !std::isspace(ch);

@@ -10,6 +10,8 @@
 #include <future>
 #include <chrono>
 #include <cstdlib>
+#include <thread>
+#include <atomic>
 
 #include "imgui.h"
 #include "imgui_internal.h"
@@ -37,6 +39,14 @@ class MappingPane {
   // Getter for the information and the usage
 
  private:
+  void  BashRecordBag();
+  void  BashLaunchLego();
+  void  BashBagPlayOrigin();
+  void  BashRoscore();
+  void  BashCheckBagPlayEnd();
+  void  BashClock();
+
+ private:
   // Information getters
   const float m_fItemSpacing;
   BuildType m_eBuildType;
@@ -49,8 +59,23 @@ class MappingPane {
   std::string find_package_front_end;
   std::string find_package_gps;
   std::string find_package_point;
-  std::string old_bag_path = "";
+  std::string old_bag_path = " ";
+  std::string origin_bag_path = " ";
+  std::string record_bag = "rosbag record /points_raw_fixed /cpt/ins_fix /aft_mapped_to_init -O ~/lego.bag";
+  std::string launch_lego = "roslaunch lego_loam run.launch";
+  std::string bag_play_origin = " ";
+  std::string bag_play_lego = " ";
+  std::string launch_gps = "roslaunch gps_based_mapping run.launch";
+  std::string launch_point = "roslaunch point_localization localization.launch";
 
+  std::atomic_bool record_bag_flag{false};
+  std::atomic_bool launch_lego_flag{false};
+  std::atomic_bool bag_play_origin_flag{false};
+  std::atomic_bool clock_flag{false};
+  std::atomic_bool roscore_flag{false};
+
+  std::string header = "gnome-terminal -t \"Play Origin Bag\" -x bash -c \" ";
+  std::string tail = ";exec bash; \" ";
 
 
 };

@@ -15,7 +15,7 @@ set(INIH_SRCS ${CMAKE_SOURCE_DIR}/extern/inih.c)
 
 # Set panorama sources
 set(SRCS panorama.cpp
-        ImGuiFileBrowser.cpp
+        file_browser.cc
         Bash.cpp
         CPUInformation.cpp
         CPUUsage.cpp
@@ -41,6 +41,7 @@ configure_file("${CMAKE_SOURCE_DIR}/config.h.in"
 # Add binary target
 add_executable(panorama ${GL3W_SRCS}
         ${IMGUI_SRCS}
+        ${IMGUI_LIBRARIES}
         ${SRCS})
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
