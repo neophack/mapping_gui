@@ -12,10 +12,12 @@
 #include <cstdlib>
 #include <thread>
 #include <atomic>
+#include <ros/ros.h>
 
 #include "imgui.h"
 #include "imgui_internal.h"
 #include "Bash.h"
+#include "RosRelated.h"
 #include "Utils.h"
 
 namespace panorama {
@@ -45,6 +47,7 @@ class MappingPane {
   void  BashRoscore();
   void  BashCheckBagPlayEnd();
   void  BashClock();
+  void ClearNode();
 
  private:
   // Information getters
@@ -61,8 +64,8 @@ class MappingPane {
   std::string find_package_point;
   std::string old_bag_path = " ";
   std::string origin_bag_path = " ";
-  std::string record_bag = "rosbag record /points_raw_fixed /cpt/ins_fix /aft_mapped_to_init -O ~/lego.bag";
-  std::string launch_lego = "roslaunch lego_loam run.launch";
+  std::string record_bag = "rosbag record /points_raw_fixed /cpt/ins_fix /aft_mapped_to_init -O ~/lego.bag __name:=lego_record_node";
+  std::string launch_lego = "roslaunch lego_loam run.launch _name:=lego_node";
   std::string bag_play_origin = " ";
   std::string bag_play_lego = " ";
   std::string launch_gps = "roslaunch gps_based_mapping run.launch";
@@ -74,8 +77,14 @@ class MappingPane {
   std::atomic_bool clock_flag{false};
   std::atomic_bool roscore_flag{false};
 
-  std::string header = "gnome-terminal -t \"Play Origin Bag\" -x bash -c \" ";
-  std::string tail = ";exec bash; \" ";
+
+  bool started_lego = false;
+  bool finished_lego = false;
+
+  bool clear_before_lego = false;
+  bool clear_lego_node = false;
+
+  bool look_node = true;
 
 
 };

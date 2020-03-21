@@ -2,10 +2,10 @@
 
 cmake_minimum_required(VERSION 3.0)
 project(panorama)
-
+include_directories(${PROJECT_BINARY_DIR})
 # Set module include path
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
-
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 if(UNIX)
     if (APPLE)
         add_definitions(-DAPPLE)
@@ -22,18 +22,17 @@ endif()
 if(MSVC)
     add_definitions(-DMSVC)
 endif()
-
 # Includes
 include(FindOpenGL)
 include(FindThreads)
 include(GeneratePanoramaVersion)
 
 # Set version and build date
-GeneratePanoramaVersion(PANORAMA_VERSION)
 
 # Set project properties
 string(TIMESTAMP PANORAMA_BUILD_DATE "%Y-%m-%d %H:%M:%S" UTC)
 set(PANORAMA_PLATFORM ${CMAKE_SYSTEM_NAME})
+set(PANORAMA_VERSION "1.0.0")
 
 # Set standard
 set(CMAKE_CXX_STANDARD 14)
@@ -42,10 +41,30 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O2")
 set(CMAKE_EXPORT_COMPILE_COMMANDS on)
 
 # Find dependencies
+find_package(catkin REQUIRED COMPONENTS
+        rospy
+        roscpp
+        std_msgs
+        nav_msgs
+        sensor_msgs
+        cv_bridge
+        tf
+        tf2
+        tf2_ros
+        eigen_conversions
+        message_filters
+        roslib
+        pcl_ros
+        )
+
 find_package(OpenGL  REQUIRED)
 find_package(SDL2    REQUIRED)
 find_package(Threads REQUIRED)
-
+include_directories(
+        include
+        ${Boost_INCLUDE_DIRS}
+        ${catkin_INCLUDE_DIRS}
+)
 # Generate GL3W headers using the provided script
 message("Downloading gl3w sources into Panorama source tree...")
 execute_process(COMMAND "python" "${CMAKE_SOURCE_DIR}/gl3w/gl3w_gen.py" "--ext" "--root=.."

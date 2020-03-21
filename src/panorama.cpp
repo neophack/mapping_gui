@@ -32,6 +32,9 @@
 
 #include "MainWindow.h"
 #include "IconsFontAwesome5.h"
+#include "config.h"
+#include "RosRelated.h"
+#include "Bash.h"
 
 #define MAIN_WINDOW_WIDTH 1280
 #define MAIN_WINDOW_HEIGHT 720
@@ -110,7 +113,7 @@ int initApplication() {
     }
 
     // Create SDL window
-    std::string sTitle = "UDI Mapping GUI v." PANORAMA_VERSION;
+    std::string sTitle = "UDI Mapping GUI v."  + std::string(PANORAMA_VERSION);
     if (panorama::utils::isRunningInPrivilagedMode())
         sTitle += " (Privileged)";
 
@@ -156,6 +159,10 @@ void destroyApplication() {
 
 int main(int argc, char **argv) {
     // Init application
+    panorama::killRoscore();
+    panorama::BashExec(" gnome-terminal -t \"RosCore\" -x bash -c \"roscore;exec bash; \" ");
+  ros::init(argc, argv, "mappoing_gui");
+  ros::NodeHandle nh("");
     int iInitResult = initApplication();
     if (iInitResult != 0)
         return iInitResult;

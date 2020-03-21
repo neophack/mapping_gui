@@ -17,6 +17,7 @@
  */
 
 #include "AboutDialog.h"
+#include "config.h"
 
 void panorama::AboutDialog::renderUI() {
     // Version
