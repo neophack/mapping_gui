@@ -90,8 +90,15 @@ class MappingPane {
   bool clear_before_lego = false;
   bool clear_lego_node = false;
   bool clear_gps_node = false;
+  bool selected_old_path = false;
 
   bool look_node = true;
+
+  FileRelated open_bag;
+  FileRelated open_pcd;
+
+
+  std::string old_map_path = " ";
 
 
 };

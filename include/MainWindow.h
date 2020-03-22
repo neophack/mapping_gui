@@ -40,6 +40,7 @@
 
 #include "SampleRates.h"
 #include "PlotColorsArray.h"
+#include "LoopClosurePane.h"
 
 namespace panorama {
     class MainWindow : public Window {
@@ -69,6 +70,7 @@ namespace panorama {
         Sidebar m_oSidebar;
         CPUPane m_oCpuPane;
         MappingPane m_oMappingPane;
+        LoopClosurePane m_oLoopClosurePane;
         ProcessListPane m_oProcessListPane;
         MemoryInfoPane m_oMemInfoPane;
 

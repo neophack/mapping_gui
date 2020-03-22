@@ -59,8 +59,10 @@ const std::string tail_exit = ";exec bash; \" ";
 
         float getScalingFactor();
     }
-
-    void DrawFileBrowser(std::string& path, std::string title, std::string filter);
+class FileRelated{
+ public:
+  void DrawFileBrowser(std::string& path, std::string title, std::string filter);
+};
 }
 
 #endif // PANORAMA_UTILS_H

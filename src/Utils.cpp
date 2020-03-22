@@ -19,24 +19,24 @@
 #include "Utils.h"
 
 using std::string;
+void panorama::FileRelated::DrawFileBrowser(std::string &path, std::string title, std::string filter) {
+    // open Dialog Simple
+    if (ImGui::Button(title.c_str()))
+      ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".pcd\0.bag\0\0", ".");
 
-void panorama::DrawFileBrowser(std::string& path, std::string title, std::string filter) {
-  // open Dialog Simple
-  if (ImGui::Button(title.c_str()))
-    ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", filter.c_str(), ".");
-
-  // display
-  if (ImGuiFileDialog::Instance()->FileDialog("ChooseFileDlgKey")) {
-    // action if OK
-    if (ImGuiFileDialog::Instance()->IsOk == true) {
-      std::string filePathName = ImGuiFileDialog::Instance()->GetFilepathName();
-      std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
-      path = filePathName;
-      // action
+    // display
+    if (ImGuiFileDialog::Instance()->FileDialog("ChooseFileDlgKey")) {
+      // action if OK
+      if (ImGuiFileDialog::Instance()->IsOk == true) {
+        std::string filePathName = ImGuiFileDialog::Instance()->GetFilepathName();
+        std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+        path = filePathName;
+        // action
+      }
+      // close
+      ImGuiFileDialog::Instance()->CloseDialog("ChooseFileDlgKey");
     }
-    // close
-    ImGuiFileDialog::Instance()->CloseDialog("ChooseFileDlgKey");
-  }
+
 }
 
 void panorama::utils::trimString(std::string &str) {

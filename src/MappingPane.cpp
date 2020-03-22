@@ -9,8 +9,12 @@ void panorama::MappingPane::BashLaunchGps() {
   if(!launch_gps_flag) {
     launch_gps_flag = true;
     std::string cmd = header + launch_gps;
+    std::string okk = "";
+    int si = old_bag_path.size();
+    for(int i = 1 ; i < si ; ++i) okk += old_bag_path.at(i);
     if(based_on_old) {
-      cmd += " old_map:=" + old_bag_path + "__name:=gps_node" + tail_no_exit;
+      cmd += " old_map:=" + okk + " __name:=gps_node" + tail_no_exit;
+      std::cout << cmd << std::endl;
     } else {
       cmd += "__name:=gps_node" + tail_no_exit;
     }
@@ -83,7 +87,10 @@ panorama::MappingPane::MappingPane()
 
 }
 
-panorama::MappingPane::~MappingPane() { }
+panorama::MappingPane::~MappingPane() {
+  killAllNode();
+  killRoscore();
+}
 void panorama::MappingPane::ClearNode() {
   if(!started_lego && !clear_before_lego) {
     killAllNode();
@@ -136,22 +143,24 @@ void panorama::MappingPane::renderUI() {
   ImGui::Text("Based on old map: "); ImGui::SameLine();
   ImGui::Checkbox(" ", &based_on_old);
   if(based_on_old) {
-    static std::string old_map_path = " ";
-    ImGui::Text("Please choose old map.pcd: "); ImGui::SameLine();
-    DrawFileBrowser(old_map_path, "Open Old Map", ".pcd\0\0");
+
+    if(old_bag_path == " ") {
+      ImGui::Text("Please choose old map.pcd: "); ImGui::SameLine();
+      open_pcd.DrawFileBrowser(old_map_path, "Open Old Map", ".pcd\0.bag\0\0");
+    }
     int si = old_map_path.size();
     old_bag_path = " ";
     for(int i = 0 ; i < si - 8 ; ++i) {
       old_bag_path += old_map_path.at(i);
     }
-    if(old_bag_path != " ") ImGui::Text("Old Map Path is %s", old_bag_path.c_str());
-  } else {
+    if(old_bag_path != " ") ImGui::Text("Old Map Path is  %s", old_bag_path.c_str());
+  } else if(!based_on_old){
     old_bag_path = " ";
   }
 
   ImGui::Separator();
   ImGui::Text("Please choose bag: "); ImGui::SameLine();
-  DrawFileBrowser(origin_bag_path, "Open Bag", ".bag\0\0");
+  open_bag.DrawFileBrowser(origin_bag_path, "Open Bag", ".*\0.bag\0\0");
   if(origin_bag_path != " ") ImGui::Text("Bag path is %s", origin_bag_path.c_str());
 
 

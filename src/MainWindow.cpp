@@ -101,10 +101,10 @@ void panorama::MainWindow::renderUI() {
             m_oMappingPane.renderUI();
             break;
         case PaneType::PANETYPE_PROCESSES:
-            m_oProcessListPane.renderUI();
+            m_oLoopClosurePane.renderUI();
             break;
         case PaneType::PANETYPE_MEMORY:
-            m_oMemInfoPane.renderUI();
+            m_oLoopClosurePane.renderUI();
             break;
     }
 
