@@ -43,6 +43,8 @@ class MappingPane {
  private:
   void  BashRecordBag();
   void  BashLaunchLego();
+  void BashLaunchGps();
+  void BashLegoBag();
   void  BashBagPlayOrigin();
   void  BashRoscore();
   void  BashCheckBagPlayEnd();
@@ -64,11 +66,11 @@ class MappingPane {
   std::string find_package_point;
   std::string old_bag_path = " ";
   std::string origin_bag_path = " ";
-  std::string record_bag = "rosbag record /points_raw_fixed /cpt/ins_fix /aft_mapped_to_init -O ~/lego.bag __name:=lego_record_node";
-  std::string launch_lego = "roslaunch lego_loam run.launch _name:=lego_node";
+  std::string record_bag = "rosbag record -O ~/lego.bag /top/rslidar_points /novatel718d/pos /aft_mapped_to_init  __name:=lego_record_node";
+  std::string launch_lego = "roslaunch lego_loam run.launch __name:=lego_node";
   std::string bag_play_origin = " ";
-  std::string bag_play_lego = " ";
-  std::string launch_gps = "roslaunch gps_based_mapping run.launch";
+  std::string bag_play_lego = " rosbag play ~/lego.bag --clock __name:=play_lego_bag" ;
+  std::string launch_gps = "roslaunch gps_based_mapping run.launch ";
   std::string launch_point = "roslaunch point_localization localization.launch";
 
   std::atomic_bool record_bag_flag{false};
@@ -76,13 +78,18 @@ class MappingPane {
   std::atomic_bool bag_play_origin_flag{false};
   std::atomic_bool clock_flag{false};
   std::atomic_bool roscore_flag{false};
+  std::atomic_bool launch_gps_flag{false};
+  std::atomic_bool bag_play_lego_bag_flag{false};
 
 
   bool started_lego = false;
+  bool started_gps = false;
   bool finished_lego = false;
+  bool finished_gps = false;
 
   bool clear_before_lego = false;
   bool clear_lego_node = false;
+  bool clear_gps_node = false;
 
   bool look_node = true;
 

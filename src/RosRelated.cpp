@@ -29,19 +29,21 @@ bool panorama::lookupNode(const std::string &node, std::string &uri) {
 }
 
 bool panorama::killRoscore() {
-  std::string cmd = "gnome-terminal -e killall -9 roscore";
+  std::string cmd = "gnome-terminal -x bash -c \" killall -9 roscore;\" ";
   BashExec(cmd.c_str());
-  cmd = "gnome-terminal -e killall -9 rosmaster";
+  cmd = "gnome-terminal -x bash -c \" killall -9 rosmaster;\" ";
   BashExec(cmd.c_str());
 }
 
 bool panorama::killAllNode() {
-  std::string cmd = "gnome-terminal -e rosnode kill -a";
+  std::string cmd = "gnome-terminal -x bash -c \" rosnode kill -a ;\" ";
+  BashExec(cmd.c_str());
+  cmd = "gnome-terminal -x bash -c \" killall -9 rviz; \" ";
   BashExec(cmd.c_str());
 
 }
 
 bool panorama::killNode(const std::string &node) {
-  std::string cmd = "gnome-terminal -e rosnode kill " + node ;
+  std::string cmd = "gnome-terminal -x bash -c \" rosnode kill " + node  + " ;\"";
   BashExec(cmd.c_str());
 }

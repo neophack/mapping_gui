@@ -5,6 +5,27 @@
 #include "MainWindow.h"
 #include "MappingPane.h"
 
+void panorama::MappingPane::BashLaunchGps() {
+  if(!launch_gps_flag) {
+    launch_gps_flag = true;
+    std::string cmd = header + launch_gps;
+    if(based_on_old) {
+      cmd += " old_map:=" + old_bag_path + "__name:=gps_node" + tail_no_exit;
+    } else {
+      cmd += "__name:=gps_node" + tail_no_exit;
+    }
+    std::string res = BashExec(cmd.c_str());
+  }
+}
+
+void panorama::MappingPane::BashLegoBag() {
+  if(!bag_play_lego_bag_flag) {
+    bag_play_lego_bag_flag = true;
+    std::string cmd = header + bag_play_lego + tail_no_exit;
+    std::string res = BashExec(cmd.c_str());
+  }
+}
+
 void panorama::MappingPane::BashBagPlayOrigin() {
   if(!bag_play_origin_flag) {
     bag_play_origin_flag = true;
@@ -139,7 +160,7 @@ void panorama::MappingPane::renderUI() {
 
   ImGui::Separator();
   bag_play_origin = header + " rosbag play " + origin_bag_path + " --clock -r 10 __name:=origin_play_node" + tail_no_exit;
-  if(origin_bag_path != " " && ImGui::Button("Start Mapping")) {
+  if(origin_bag_path != " " && ((based_on_old && old_bag_path != " ") || (!based_on_old)) && ImGui::Button("Start Mapping")) {
     static std::thread lego_thread(&panorama::MappingPane::BashLaunchLego, this);
     static std::thread record_bag_thread(&panorama::MappingPane::BashRecordBag, this);
     static std::thread play_origin_bag_thread(&panorama::MappingPane::BashBagPlayOrigin, this);
@@ -183,11 +204,9 @@ void panorama::MappingPane::renderUI() {
       killNode(node);
       node = "/lego_record_node";
       killNode(node);
+      killAllNode();
       finished_lego = true;
       clear_lego_node = true;
-      killAllNode();
-      killRoscore();
-      panorama::BashExec(" gnome-terminal -t \"RosCore\" -x bash -c \"roscore;exec bash; \" ");
     }
   }
 
@@ -196,6 +215,37 @@ void panorama::MappingPane::renderUI() {
   } else if(finished_lego){
     ImGui::TextColored(ImVec4(0, 1, 0, 1), "Recorded LEGO...Trying to next step..." );
   }
+
+  /**********************LEGO finished************************/
+  /**********************GPS Started************************/
+  if(finished_lego && (!started_gps)) {
+    static std::thread bag_play_lego_thread(&panorama::MappingPane::BashLegoBag, this);
+    static std::thread gps_thread(&panorama::MappingPane::BashLaunchGps, this);
+    if(!launch_gps_flag && gps_thread.joinable()) gps_thread.join();
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    if(!bag_play_lego_bag_flag && bag_play_lego_thread.joinable()) bag_play_lego_thread.join();
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    started_gps = true;
+  }
+
+  node = "/play_lego_bag";
+  if(finished_lego && (!finished_gps) && started_gps && (!lookupNode(node, node_uri))) {
+    if(!clear_gps_node) {
+      node = "/gps_node";
+      killNode(node);
+      killAllNode();
+      finished_gps = true;
+      clear_gps_node = true;
+    }
+  }
+
+  if(finished_lego && started_gps && (!finished_gps)) {
+    ImGui::Text("Running GPS Based Mapping...Please wait...");
+  } else if(finished_lego && finished_gps){
+    ImGui::TextColored(ImVec4(0, 1, 0, 1), "GPS Mapping Finished...Map saved in ~/.ros/Map..." );
+  }
+
+
 
   ImGui::EndChild();
 }
