@@ -19,13 +19,13 @@
 #include "Utils.h"
 
 using std::string;
-void panorama::FileRelated::DrawFileBrowser(std::string &path, std::string title, std::string filter) {
+void panorama::FileRelated::DrawFileBrowser(std::string &path, std::string title, std::string filter, std::string key) {
     // open Dialog Simple
     if (ImGui::Button(title.c_str()))
-      ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".pcd\0.bag\0\0", ".");
+      ImGuiFileDialog::Instance()->OpenDialog(key, "Choose File", filter.c_str(), " ");
 
     // display
-    if (ImGuiFileDialog::Instance()->FileDialog("ChooseFileDlgKey")) {
+    if (ImGuiFileDialog::Instance()->FileDialog(key)) {
       // action if OK
       if (ImGuiFileDialog::Instance()->IsOk == true) {
         std::string filePathName = ImGuiFileDialog::Instance()->GetFilepathName();
@@ -34,9 +34,13 @@ void panorama::FileRelated::DrawFileBrowser(std::string &path, std::string title
         // action
       }
       // close
-      ImGuiFileDialog::Instance()->CloseDialog("ChooseFileDlgKey");
+      ImGuiFileDialog::Instance()->CloseDialog(key);
     }
 
+}
+
+void panorama::FileRelated::CloseFileBrowser(std::string key) {
+  ImGuiFileDialog::Instance()->CloseDialog(key);
 }
 
 void panorama::utils::trimString(std::string &str) {

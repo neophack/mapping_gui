@@ -61,7 +61,8 @@ const std::string tail_exit = ";exec bash; \" ";
     }
 class FileRelated{
  public:
-  void DrawFileBrowser(std::string& path, std::string title, std::string filter);
+  void DrawFileBrowser(std::string& path, std::string title, std::string filter, std::string key);
+  void CloseFileBrowser(std::string key);
 };
 }
 

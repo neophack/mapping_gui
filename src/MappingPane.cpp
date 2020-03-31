@@ -143,32 +143,35 @@ void panorama::MappingPane::renderUI() {
   ImGui::Text("Based on old map: "); ImGui::SameLine();
   ImGui::Checkbox(" ", &based_on_old);
   if(based_on_old) {
-
     if(old_bag_path == " ") {
       ImGui::Text("Please choose old map.pcd: "); ImGui::SameLine();
-      open_pcd.DrawFileBrowser(old_map_path, "Open Old Map", ".pcd\0.bag\0\0");
+      open_pcd.DrawFileBrowser(old_map_path, "Open Old Map", ".pcd\0.bag\0\0", "oldmap");
     }
     int si = old_map_path.size();
     old_bag_path = " ";
     for(int i = 0 ; i < si - 8 ; ++i) {
       old_bag_path += old_map_path.at(i);
     }
-    if(old_bag_path != " ") ImGui::Text("Old Map Path is  %s", old_bag_path.c_str());
+    if(old_bag_path != " ") {
+      ImGui::Text("Old Map Path is  %s", old_bag_path.c_str());
+    }
   } else if(!based_on_old){
     old_bag_path = " ";
   }
 
   ImGui::Separator();
   ImGui::Text("Please choose bag: "); ImGui::SameLine();
-  open_bag.DrawFileBrowser(origin_bag_path, "Open Bag", ".*\0.bag\0\0");
-  if(origin_bag_path != " ") ImGui::Text("Bag path is %s", origin_bag_path.c_str());
+  open_bag.DrawFileBrowser(origin_bag_path, "Open Bag", ".bag\0.pcd \0\0", "openbag");
+  if(origin_bag_path != " ") {
+    ImGui::Text("Bag path is %s", origin_bag_path.c_str());
+  }
 
 
   static std::thread clock_thread(&panorama::MappingPane::BashClock, this);
   if(clock_thread.joinable() && !clock_flag) clock_thread.join();
 
   ImGui::Separator();
-  bag_play_origin = header + " rosbag play " + origin_bag_path + " --clock -r 10 __name:=origin_play_node" + tail_no_exit;
+  bag_play_origin = header + " rosbag play " + origin_bag_path + " --clock __name:=origin_play_node" + tail_no_exit;
   if(origin_bag_path != " " && ((based_on_old && old_bag_path != " ") || (!based_on_old)) && ImGui::Button("Start Mapping")) {
     static std::thread lego_thread(&panorama::MappingPane::BashLaunchLego, this);
     static std::thread record_bag_thread(&panorama::MappingPane::BashRecordBag, this);

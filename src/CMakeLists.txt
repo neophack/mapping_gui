@@ -52,11 +52,13 @@ target_include_directories(panorama PRIVATE
         ${PROJECT_SOURCE_DIR}/gl3w
         ${CMAKE_BINARY_DIR}
         ${PROJECT_SOURCE_DIR}/include
-        ${SDL2_INCLUDE_DIRS})
+        ${SDL2_INCLUDE_DIRS}
+        )
 
 target_link_libraries(panorama Threads::Threads ${OPENGL_LIBRARIES}
         ${catkin_LIBRARIES}
-        dl SDL2 cap)
+        dl SDL2 cap
+        stdc++fs)
 
 # Installation
 install(TARGETS panorama DESTINATION bin)
