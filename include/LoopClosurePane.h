@@ -37,6 +37,8 @@ class LoopClosurePane {
  private:
 
   const float m_fItemSpacing;
+  bool accept_loop = false;
+
 };
 }
 

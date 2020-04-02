@@ -131,12 +131,9 @@ void panorama::MappingPane::renderUI() {
   ImGui::PopFont();
   ImGui::AlignTextToFramePadding();
   ImGui::PushItemWidth(60);
-  ImGui::Text("GPS Param1: "); ImGui::SameLine();
-  ImGui::InputText("", gps_param1, 8, ImGuiInputTextFlags_CharsNoBlank);
-  ImGui::Text("GPS Param2: "); ImGui::SameLine();
-  ImGui::InputText("", gps_param2, 8, ImGuiInputTextFlags_CharsNoBlank);
-  ImGui::Text("GPS Param3: "); ImGui::SameLine();
-  ImGui::InputText("", gps_param3, 8, ImGuiInputTextFlags_CharsNoBlank);
+  ImGui::InputText("GPS Param1", gps_param1, 8, ImGuiInputTextFlags_CharsNoBlank);
+  ImGui::InputText("GPS Param2", gps_param2, 8, ImGuiInputTextFlags_CharsNoBlank);
+  ImGui::InputText("GPS Param3", gps_param3, 8, ImGuiInputTextFlags_CharsNoBlank);
   ImGui::PopItemWidth();
 
   ImGui::Separator();
