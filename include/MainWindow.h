@@ -33,13 +33,9 @@
 #include "FontDefinitions.h"
 
 #include "Sidebar.h"
-#include "CPUPane.h"
 #include "MappingPane.h"
-#include "ProcessListPane.h"
-#include "MemoryInfoPane.h"
 
 #include "SampleRates.h"
-#include "PlotColorsArray.h"
 #include "LoopClosurePane.h"
 
 namespace panorama {
@@ -68,11 +64,8 @@ namespace panorama {
 
         // GUI Panes
         Sidebar m_oSidebar;
-        CPUPane m_oCpuPane;
         MappingPane m_oMappingPane;
         LoopClosurePane m_oLoopClosurePane;
-        ProcessListPane m_oProcessListPane;
-        MemoryInfoPane m_oMemInfoPane;
 
         // Typedefs for std::chrono
         typedef std::chrono::steady_clock clock_t;

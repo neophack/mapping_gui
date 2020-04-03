@@ -23,65 +23,13 @@ using std::string;
 panorama::MainWindow::MainWindow(SDL_Window *pSdlWindow,
                                 const std::string &sTitle, int w, int h) : Window(pSdlWindow, sTitle, w, h),
         m_eMeasurementUnits{MeasurementUnits::MEASUREMENT_UNITS_BINARY},
-        m_oSidebar{w * 0.1f}, m_oCpuPane{ },
-        m_oProcessListPane{ }, m_oMemInfoPane{ } { }
+        m_oSidebar{w * 0.1f} { }
 
 panorama::MainWindow::~MainWindow() { }
 
 void panorama::MainWindow::renderUI() {
     // Static updater tasks
     // TOFIX: This whole block is kindda ugly. Must be some way of unifying and templating this entire thing...
-    static auto futUsageUpdaterTask = m_oCpuPane.cpuUsage().launchCpuUsageSampleTask();
-    static auto futProcessListGetterTask = m_oProcessListPane.processList().launchProcessListGetterTask();
-    static auto futMemoryInfoGetterTask = m_oMemInfoPane.memoryInfo().launchProcessListGetterTask();
-
-    // Check if we need to update the data
-    {
-        auto tDeltaCpuMillis =
-                std::chrono::duration_cast<std::chrono::milliseconds>(clock_t::now() - m_tLastCpuUsageRefresh);
-        if (tDeltaCpuMillis.count() >= CPU_SAMPLE_RATE.count()) {
-            // Check if the cpu usage future has been completed.
-            // If it did, update the data and relaunch the task.
-            if (m_oCpuPane.cpuUsage().isTaskReady(futUsageUpdaterTask)) {
-                m_oCpuPane.cpuUsage().updateData(futUsageUpdaterTask);
-
-                futUsageUpdaterTask = m_oCpuPane.cpuUsage().launchCpuUsageSampleTask();
-            }
-
-            // Update last refresh time
-            m_tLastCpuUsageRefresh = std::chrono::steady_clock::now();
-        }
-
-        auto tDeltaProcessListMillis =
-                std::chrono::duration_cast<std::chrono::milliseconds>(clock_t::now() - m_tLastProcessListRefresh);
-        if (tDeltaProcessListMillis.count() >= PROCESS_SAMPLE_RATE.count()) {
-            // Check if the task has been completed.
-            // If it did, update the data and relaunch the task.
-            if (m_oProcessListPane.processList().isTaskReady(futProcessListGetterTask)) {
-                m_oProcessListPane.processList().updateData(futProcessListGetterTask);
-
-                futProcessListGetterTask = m_oProcessListPane.processList().launchProcessListGetterTask();
-            }
-
-            // Update last refresh time
-            m_tLastProcessListRefresh = std::chrono::steady_clock::now();
-        }
-
-        auto tDeltaMemoryListMillis =
-                std::chrono::duration_cast<std::chrono::milliseconds>(clock_t::now() - m_tLastMemoryInfoRefresh);
-        if (tDeltaMemoryListMillis.count() >= MEMORY_SAMPLE_RATE.count()) {
-            // Check if the task has been completed.
-            // If it did, update the data and relaunch the task.
-            if (m_oMemInfoPane.memoryInfo().isTaskReady(futMemoryInfoGetterTask)) {
-                m_oMemInfoPane.memoryInfo().updateData(futMemoryInfoGetterTask);
-
-                futMemoryInfoGetterTask = m_oMemInfoPane.memoryInfo().launchProcessListGetterTask();
-            }
-
-            // Update last refresh time
-            m_tLastMemoryInfoRefresh = std::chrono::steady_clock::now();
-        }
-    }
 
     // Begin rendering the UI
     ImGui::PushFont(panorama::getFont(PANORAMA_FONT_REGULAR));

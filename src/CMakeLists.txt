@@ -19,19 +19,10 @@ set(SRCS panorama.cpp
         RosRelated.cpp
         LoopClosurePane.cpp
         Bash.cpp
-        CPUInformation.cpp
-        CPUUsage.cpp
-        ProcessList.cpp
         Utils.cpp
-        PlotColorsArray.cpp
         Sidebar.cpp
-        CPUPane.cpp
         MappingPane.cpp
         AboutDialog.cpp
-        ProcessListPane.cpp
-        ProcessUtils.cpp
-        MemoryInfo.cpp
-        MemoryInfoPane.cpp
         Window.cpp
         MainWindow.cpp
         Theming.cpp)
