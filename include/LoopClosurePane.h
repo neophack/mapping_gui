@@ -38,6 +38,7 @@ class LoopClosurePane {
 
   void InitMemory();
   void NewManual();
+  void PoseView();
 
   const float m_fItemSpacing;
   bool accept_loop = false;

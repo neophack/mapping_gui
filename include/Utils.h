@@ -38,8 +38,8 @@
 
 namespace panorama {
 const std::string header = "gnome-terminal -t \"UDI Mapping GUI\" -x bash -c \" ";
-const std::string tail_no_exit = ";exit; \" ";
-const std::string tail_exit = ";exec bash; \" ";
+const std::string tail_exit = ";exit; \" ";
+const std::string tail_no_exit = ";exec bash; \" ";
 
     namespace utils {
         void trimString(std::string &str);

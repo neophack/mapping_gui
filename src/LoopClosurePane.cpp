@@ -17,7 +17,23 @@ panorama::LoopClosurePane::~LoopClosurePane() {
 }
 
 void panorama::LoopClosurePane::NewManual() {
-  std::string ret = BashExec("gnome-terminal -t \"Launch LEGO\" -x bash -c \"roslaunch lego_loam run.launch;exec bash; \" ");
+  std::string sql = "rosrun gps_based_mapping manual_opt ~/.ros/Map/";
+  sql += " " + std::to_string(flag_address);
+  sql += " " + std::to_string(opt_address);
+  sql += " " + std::to_string(start_address);
+  sql += " " + std::to_string(end_address);
+  sql += " " + std::to_string(near_address);
+  sql += " " + std::to_string(max_address);
+  sql += " " + std::to_string(accept_address);
+  sql = "gnome-terminal -t \"Loop Closure\" -x bash -c \" cd ~; " + sql + " ;exec bash;\" ";
+
+  std::string ret = BashExec(sql.c_str());
+}
+
+void panorama::LoopClosurePane::PoseView() {
+  std::string sql = "gnome-terminal -t \"Pose Viewer\" -x bash -c \" " ;
+  sql += "cd ~/catkin_ws/src/gui_main; python3 gui_main.py; exec bash; \" ";
+  std::string ret = BashExec(sql.c_str());
 }
 
 void panorama::LoopClosurePane::InitMemory() {
@@ -44,6 +60,10 @@ void panorama::LoopClosurePane::InitMemory() {
   strcpy(accept_text, "@accept");
 
   printf("%d %d %d %d %d %d %d\n", flag_address, opt_address, start_address, end_address, near_address, max_address, accept_address);
+  static std::thread manual_thread(&panorama::LoopClosurePane::NewManual, this);
+  static std::thread viewer_thread(&panorama::LoopClosurePane::PoseView, this);
+  if(manual_thread.joinable()) manual_thread.join();
+  if(viewer_thread.joinable()) viewer_thread.join();
   init_memory = true;
 }
 
