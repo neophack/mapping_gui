@@ -37,6 +37,7 @@
 
 #include "SampleRates.h"
 #include "LoopClosurePane.h"
+#include "ManageMapPane.h"
 
 namespace panorama {
     class MainWindow : public Window {
@@ -66,6 +67,7 @@ namespace panorama {
         Sidebar m_oSidebar;
         MappingPane m_oMappingPane;
         LoopClosurePane m_oLoopClosurePane;
+        ManageMapPane m_oManageMapPane;
 
         // Typedefs for std::chrono
         typedef std::chrono::steady_clock clock_t;

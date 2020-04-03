@@ -17,6 +17,7 @@ set(INIH_SRCS ${PROJECT_SOURCE_DIR}/extern/inih.c)
 set(SRCS panorama.cpp
         file_browser.cc
         RosRelated.cpp
+        ManageMapPane.cpp
         LoopClosurePane.cpp
         Bash.cpp
         Utils.cpp
