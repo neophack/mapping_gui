@@ -124,16 +124,8 @@ void panorama::LoopClosurePane::renderUI() {
     }
   }
 
-  ImGui::Separator();
-  ImGui::PushFont(panorama::getFont(PANORAMA_FONT_TITLE));
-  ImGui::TextColored(ImVec4(0.5, 0.5, 0.5, 1), "%s", "Rebuild");
-  ImGui::PopFont();
 
-  if(ImGui::Button("Rebuild the map")) {
-    strcpy(opt_text, "r");
-    strcpy(flag_text, "true");
-    std::cout << "Rebuild the map\n";
-  }
+
 
   ImGui::Separator();
   ImGui::PushFont(panorama::getFont(PANORAMA_FONT_TITLE));
@@ -149,7 +141,22 @@ void panorama::LoopClosurePane::renderUI() {
   ImGui::PopItemWidth();
 
   if(ImGui::Button("delete..")) {
+    strcpy(start_text, start_frame);
+    strcpy(end_text, end_frame);
+    strcpy(opt_text, "d");
+    strcpy(flag_text, "true");
     std::cout << "delete\n";
+  }
+
+  ImGui::Separator();
+  ImGui::PushFont(panorama::getFont(PANORAMA_FONT_TITLE));
+  ImGui::TextColored(ImVec4(0.5, 0.5, 0.5, 1), "%s", "Rebuild");
+  ImGui::PopFont();
+
+  if(ImGui::Button("Rebuild the map")) {
+    strcpy(opt_text, "r");
+    strcpy(flag_text, "true");
+    std::cout << "Rebuild the map\n";
   }
 
   ImGui::Separator();
