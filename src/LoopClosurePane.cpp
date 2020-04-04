@@ -16,6 +16,23 @@ panorama::LoopClosurePane::LoopClosurePane()
 panorama::LoopClosurePane::~LoopClosurePane() {
 }
 
+void panorama::LoopClosurePane::FreeSharedMemory() {
+  shmid_ds flag_kill;
+  shmid_ds opt_kill;
+  shmid_ds start_kill;
+  shmid_ds end_kill;
+  shmid_ds near_kill;
+  shmid_ds max_kill;
+  shmid_ds accept_kill;
+  shmctl(flag_address, IPC_RMID, &flag_kill);
+  shmctl(opt_address, IPC_RMID, &opt_kill);
+  shmctl(start_address, IPC_RMID, &start_kill);
+  shmctl(end_address, IPC_RMID, &end_kill);
+  shmctl(near_address, IPC_RMID, &near_kill);
+  shmctl(max_address, IPC_RMID, &max_kill);
+  shmctl(accept_address, IPC_RMID, &accept_kill);
+}
+
 void panorama::LoopClosurePane::NewManual() {
   std::string sql = "rosrun gps_based_mapping manual_opt ~/.ros/Map/";
   sql += " " + std::to_string(flag_address);
@@ -161,6 +178,7 @@ void panorama::LoopClosurePane::renderUI() {
 
   ImGui::Separator();
   if(ImGui::Button("Finished!!!")) {
+    FreeSharedMemory();
     strcpy(opt_text, "e");
     strcpy(flag_text, "true");
   }
