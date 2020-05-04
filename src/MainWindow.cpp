@@ -52,7 +52,7 @@ void panorama::MainWindow::renderUI() {
             m_oLoopClosurePane.renderUI();
             break;
         case PaneType::PANETYPE_MEMORY:
-            m_oManageMapPane.renderUI();
+            m_oPointLocalization.renderUI();
             break;
     }
 

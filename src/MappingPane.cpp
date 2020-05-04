@@ -55,7 +55,7 @@ void panorama::MappingPane::BashRecordBag() {
 
 void panorama::MappingPane::BashRoscore() {
   roscore_flag = true;
-  std::string sql = header + " roscore " + tail_no_exit;
+  std::string sql = "gnome-terminal -t \"Roscore\" -x bash -c \"roscore;exec bash; \" ";
   BashExec(sql.c_str());
 }
 
@@ -68,14 +68,15 @@ void panorama::MappingPane::BashCheckBagPlayEnd() {
 
 void panorama::MappingPane::BashClock() {
   clock_flag = true;
-  std::string sql = header + "rosparam set /use_sim_time true" + tail_exit;
+  std::string sql ="gnome-terminal -t \"Sim Time\" -x bash -c \"rosparam set /use_sim_time true;exec bash; \" ";
   BashExec(sql.c_str());
 }
 panorama::MappingPane::MappingPane()
     :
       m_fItemSpacing{ImGui::GetStyle().ItemSpacing.y},
       m_eBuildType{BuildType::GRAPH_NEW_MAP} {
-  // For a single CPU we show the combined graph.
+  // For a single CPU we show the combined graph
+  BashClock();
   if (based_on_old)
     m_eBuildType = BuildType::GRAPH_OLD_MAP;
   find_package_front_end = BashExec("gnome-terminal -e rospack find lego_loam");
@@ -84,7 +85,6 @@ panorama::MappingPane::MappingPane()
   if(find_package_gps.find("ERROR") != std::string::npos) gps_based_exist = true;
   find_package_point = BashExec("gnome-terminal -e rospack find point_localization");
   if(find_package_point.find("ERROR") != std::string::npos) point_based_exist = true;
-
 }
 
 panorama::MappingPane::~MappingPane() {

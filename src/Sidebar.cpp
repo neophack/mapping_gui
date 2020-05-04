@@ -45,7 +45,7 @@ void panorama::Sidebar::renderUI() {
         m_eCurrentlyVisiblePane = PaneType::PANETYPE_PROCESSES;
 
     // Resources Pane button
-    if (ImGui::Selectable(ICON_FA_MEMORY " Map Manage",
+    if (ImGui::Selectable(ICON_FA_MEMORY " Point Localization",
                           (m_eCurrentlyVisiblePane == PaneType::PANETYPE_MEMORY), 0, v2ButtonSize))
         m_eCurrentlyVisiblePane = PaneType::PANETYPE_MEMORY;
 
